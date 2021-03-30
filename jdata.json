@@ -1,0 +1,13 @@
+[
+    {
+        "name": "abhinav",
+        "command": [
+            {
+                "command": "npm init"
+            },
+            {
+                "command": "touch index.js"
+            }
+        ]
+    }
+]
