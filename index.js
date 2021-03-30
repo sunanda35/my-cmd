@@ -12,7 +12,7 @@ const { version } = require('./package.json')
 var argv = (process.argv.slice(2))
 
 if(argv.length===0){
-  console.log('what you want to do baby?')
+  console.log('You havn\t give any executable command. You should check our documentation or run: my -h')
 }else{
   try{
     switch(argv[0]){

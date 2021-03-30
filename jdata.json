@@ -1,13 +1,1 @@
-[
-    {
-        "name": "abhinav",
-        "command": [
-            {
-                "command": "npm init"
-            },
-            {
-                "command": "touch index.js"
-            }
-        ]
-    }
-]
+[{"name":"abhinav","command":[{"command":"npm init"},{"command":"touch index.js"}]},{"name":"fuck","command":[{"command":"good"}]}]
