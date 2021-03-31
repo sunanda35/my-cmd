@@ -19,4 +19,4 @@ my -h
 - **`my -v`** ==> to see version of this package
 
 
-### ***`Now i am using linux, It may not run perfectly on windows. But a big welcome to you to make it possible for windows also!`***
+### ***`It made on linux, It may not run perfectly on windows. But a big welcome to you to make it possible for windows also!`***
