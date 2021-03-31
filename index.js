@@ -2,14 +2,13 @@
 
 
 const fs = require('fs');
-const jdata = require('./jdata.json');
+const jdata = require('/tmp/jdata.json');
 const { spawn } = require('child_process');
 const inq = require('inquirer');
 const { version } = require('./package.json');
 
-
+console.log(process.platform)
 var argv = (process.argv.slice(2))
-
 if(argv.length===0){
   help()
 }else{
@@ -61,7 +60,7 @@ function addCmd(){
   
   var dataAdd = (data) =>{
     jdata.push(data)
-   fs.writeFileSync('jdata.json', JSON.stringify(jdata))
+   fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
    }
 
   inq.prompt([
@@ -167,7 +166,7 @@ function updateCmdName(i){
 
     if(answer.update != jdata[i].name){
       jdata[i].name = answer.update
-      fs.writeFileSync('jdata.json', JSON.stringify(jdata))
+      fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
     }
   })
 }
@@ -230,7 +229,7 @@ function deleteCmd(){
     for(var i=0;i<jdata.length;i++){
       if(jdata[i].name===answer.nameofpacket){
         jdata.splice(i,1)
-        fs.writeFileSync('jdata.json', JSON.stringify(jdata))
+        fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
         console.log(`Deleted this "${answer.nameofpacket}" name command packet`)
         return;
       }
