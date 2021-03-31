@@ -9,5 +9,16 @@
                 "command": "touch index.js"
             }
         ]
+    },
+    {
+        "name": "sandip",
+        "command": [
+            {
+                "command": "node -v"
+            },
+            {
+                "command": "npm -v"
+            }
+        ]
     }
 ]
