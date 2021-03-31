@@ -1,6 +1,6 @@
 {
   "name": "my-cmd-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "You can add multiple executable command with a name. When you run this name, every command will execute sequencially.",
   "main": "index.js",
   "preferGlobal": true,
