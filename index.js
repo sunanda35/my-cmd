@@ -5,28 +5,30 @@ const fs = require('fs');
 const jdata = require('./jdata.json');
 const { spawn } = require('child_process');
 const inq = require('inquirer');
-
-const { version } = require('./package.json')
+const { version } = require('./package.json');
 
 
 var argv = (process.argv.slice(2))
 
 if(argv.length===0){
-  console.log('You havn\t give any executable command. You should check our documentation or run: my -h')
+  help()
 }else{
   try{
     switch(argv[0]){
       case "add":
         addCmd()
         break;
+      case "update":
+        updateCmd();
+        break;
       case "all":
-        console.log('It will show you all command you have saved')
+        showAllName();
         break;
       case "delete":
         deleteCmd()
         break;
       case "-h":
-        console.log('we can\'t help you buddy')
+        help()
         break;
       case "-v":
         console.log(`App version: ${version}`)
@@ -39,6 +41,16 @@ if(argv.length===0){
   }
 }
  
+function help(){
+  console.log('my add             to add new name with commands')
+  console.log('my <command name>  to execute nameing command')
+  console.log('my delete          to delete name with commands')
+  console.log('my all             to see all executable command names with commands')
+  console.log('my update          to update existing names with commands')
+  console.log('my -h              to get help')
+  console.log('my -v              to see version of this pakcage')
+}
+//help
 
 function addCmd(){
   //create object
@@ -63,7 +75,7 @@ function addCmd(){
       console.log('You havn\'t give any name yet! fuck off ')
       return;
     }
-    if(answer.client==="add" || answer.client==="all" || answer.client==="delete" || answer.client==="update"){
+    if(answer.client==="add" || answer.client==="all" || answer.client==="delete" || answer.client==="update" || answer.client==="-h" || answer.client==="-v"){
       console.log('Sorry! These are reserve command, Please use something else')
       return;
     }
@@ -112,6 +124,55 @@ function addCmd(){
 }
 // addcmd
 
+function updateCmd(){
+  inq.prompt([
+    {
+      type: 'input',
+      name: 'update_client',
+      message: 'Which naming commands you want to change?'
+    }
+  ]).then(answer =>{
+    if(answer.update_client==="add" || answer.update_client==="all" || answer.update_client==="delete" || answer.update_client==="update" || answer.update_client==="-h" || answer.update_client==="-v"){
+      console.log('Sorry! These are reserve command, Please use something else')
+      return;
+    }
+    for(var i=0; i<jdata.length; i++){
+      if(jdata[i].name===answer.update_client){
+        try{
+          updateCmdName(i);
+        }catch(err){
+          console.log(err)
+        }
+        return;
+      }
+    }
+    console.log('Sorry, This is not existing command. Please put some existing command!')
+  }).catch(error =>{
+    console.log(error)
+  })
+}
+
+function updateCmdName(i){
+  inq.prompt([
+    {
+      type: 'input',
+      name: 'update',
+      message: 'Which naming commands you want to change?'
+    }
+  ]).then(answer => {
+    if(answer.update===''){
+      console.log('Sorry, you have given empty string. Please try with valid name')
+      return;
+    }
+
+    if(answer.update != jdata[i].name){
+      jdata[i].name = answer.update
+      fs.writeFileSync('jdata.json', JSON.stringify(jdata))
+    }
+  })
+}
+// updateCmdName
+
 function executeCmd(commandName){
   for(var i=0; i<jdata.length; i++){
     if(jdata[i].name===commandName){
@@ -158,15 +219,19 @@ function deleteCmd(){
     {
       type: 'input',
       name:'nameofpacket',
-      message: 'Which data packet you want to delete?'
+      message: 'Which command packet you want to delete?'
     }
   ]).then(answer=>{
+    if(answer.nameofpacket==="add" || answer.nameofpacket==="all" || answer.nameofpacket==="delete" || answer.nameofpacket==="update" || answer.nameofpacket==="-h" || answer.nameofpacket==="-v"){
+      console.log('Sorry! These are reserve command, Please use something else')
+      return;
+    }
     console.log(answer.nameofpacket)
     for(var i=0;i<jdata.length;i++){
       if(jdata[i].name===answer.nameofpacket){
         jdata.splice(i,1)
         fs.writeFileSync('jdata.json', JSON.stringify(jdata))
-        console.log(`Deleted this ${answer.nameofpacket} packet`)
+        console.log(`Deleted this "${answer.nameofpacket}" name command packet`)
         return;
       }
     }
@@ -174,4 +239,18 @@ function deleteCmd(){
   }).catch(error=>{
     console.log(error)
   })
+}
+//deleteCmd
+function showAllName(){
+  if(jdata.length==0){
+    console.log('Sorry, you havn\'t saved any command. First add some command!')
+    return;
+  }
+  for(var i=0; i<jdata.length; i++){
+    console.log(`my ${jdata[i].name}:`)
+    for(var cmd=0;cmd<jdata[i].command.length; cmd++){
+      console.log(` --- ${jdata[i].command[cmd].command}`)
+    }
+    console.log(`\n`)
+  }
 }
