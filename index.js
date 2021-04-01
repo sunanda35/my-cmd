@@ -9,9 +9,7 @@ const inq = require('inquirer');
 const { version } = require('./package.json');
 
 
-
-console.log(process.platform)
-var argv = (process.argv.slice(2))
+var argv = (process.argv.slice(2))   
 if(argv.length===0){
   help()
 }else{
@@ -43,7 +41,19 @@ if(argv.length===0){
     console.log(err)
   }
 }
- 
+
+var string = {
+    "empty_name": "Name is required.",
+    "empty_command": "No command found, give a valid command.",
+    "reserve_command": "This is a reserved command.",
+    "same_name_use": "You have used this name already!",
+    "nameing_command_not_available": "No command found by this name.",
+    "command_not_available": "No command found by this name.",
+    "command_executed":"Command executed successfully.",
+    "command_deleted":"Command deleted successfully",
+    "no_command_available": "No command added yet."
+}
+
 function help(){
   console.log('my add             to add new name with commands')
   console.log('my <command name>  to execute nameing command')
@@ -80,16 +90,16 @@ function addCmd(){
     }
   ]).then(answer => {
     if(answer.client===""){
-      console.log('You havn\'t give any name yet! fuck off ')
+      console.log(string.empty_name)
       return;
     }
     if(answer.client==="add" || answer.client==="all" || answer.client==="delete" || answer.client==="update" || answer.client==="-h" || answer.client==="-v"){
-      console.log('Sorry! These are reserve command, Please use something else')
+      console.log(string.reserve_command)
       return;
     }
       for(var i=0; i<jdata.length; i++){
         if(jdata[i].name===answer.client){
-          console.log('You have already used this name. Plese use something else!')
+          console.log(string.same_name_use)
           return;
         }
       }
@@ -141,7 +151,7 @@ function updateCmd(){
     }
   ]).then(answer =>{
     if(answer.update_client==="add" || answer.update_client==="all" || answer.update_client==="delete" || answer.update_client==="update" || answer.update_client==="-h" || answer.update_client==="-v"){
-      console.log('Sorry! These are reserve command, Please use something else')
+      console.log(string.reserve_command)
       return;
     }
     for(var i=0; i<jdata.length; i++){
@@ -154,7 +164,7 @@ function updateCmd(){
         return;
       }
     }
-    console.log('Sorry, This is not existing command. Please put some existing command!')
+    console.log(string.command_not_available)
   }).catch(error =>{
     console.log(error)
   })
@@ -169,7 +179,7 @@ function updateCmdName(i){
     }
   ]).then(answer => {
     if(answer.update===''){
-      console.log('Sorry, you have given empty string. Please try with valid name')
+      console.log(string.empty_command)
       return;
     }
 
@@ -185,12 +195,11 @@ function executeCmd(commandName){
   for(var i=0; i<jdata.length; i++){
     if(jdata[i].name===commandName){
       cmdRun(i);
-      console.log('Every command has been executed!')
       
       return;
     }
   }
-  console.log('Sorry, this naming command not found. Plasae try again!')
+  console.log(string.command_not_available)
 
 }
 //executeCmd
@@ -232,7 +241,7 @@ function deleteCmd(){
     }
   ]).then(answer=>{
     if(answer.nameofpacket==="add" || answer.nameofpacket==="all" || answer.nameofpacket==="delete" || answer.nameofpacket==="update" || answer.nameofpacket==="-h" || answer.nameofpacket==="-v"){
-      console.log('Sorry! These are reserve command, Please use something else')
+      console.log(string.reserve_command)
       return;
     }
     console.log(answer.nameofpacket)
@@ -244,7 +253,7 @@ function deleteCmd(){
         return;
       }
     }
-    console.log('Sorry there havn\'t any data packet by this name.')
+    console.log(string.nameing_command_not_available)
   }).catch(error=>{
     console.log(error)
   })
@@ -252,7 +261,7 @@ function deleteCmd(){
 //deleteCmd
 function showAllName(){
   if(jdata.length==0){
-    console.log('Sorry, you havn\'t saved any command. First add some command!')
+    console.log('No command is available')
     return;
   }
   for(var i=0; i<jdata.length; i++){
