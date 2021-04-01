@@ -1,2 +1,16 @@
 [
+    {
+        "name": "shu",
+        "command": [
+            {
+                "command": "node -v"
+            },
+            {
+                "command": "npm -v"
+            },
+            {
+                "command": "python3 --version"
+            }
+        ]
+    }
 ]

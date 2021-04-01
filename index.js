@@ -33,6 +33,9 @@ if(argv.length===0){
       case "-v":
         console.log(`App version: ${version}`)
         break;
+      case "--version":
+        console.log(`App version: ${version}`)
+        break;
       default:
         executeCmd(argv[0])
       
@@ -42,17 +45,6 @@ if(argv.length===0){
   }
 }
 
-var string = {
-    "empty_name": "Name is required.",
-    "empty_command": "No command found, give a valid command.",
-    "reserve_command": "This is a reserved command.",
-    "same_name_use": "You have used this name already!",
-    "nameing_command_not_available": "No command found by this name.",
-    "command_not_available": "No command found by this name.",
-    "command_executed":"Command executed successfully.",
-    "command_deleted":"Command deleted successfully",
-    "no_command_available": "No command added yet."
-}
 
 function help(){
   console.log('my add             to add new name with commands')
@@ -94,12 +86,12 @@ function addCmd(){
       return;
     }
     if(answer.client==="add" || answer.client==="all" || answer.client==="delete" || answer.client==="update" || answer.client==="-h" || answer.client==="-v"){
-      console.log(string.reserve_command)
+      console.log('This is reserve command. Try something else.')
       return;
     }
       for(var i=0; i<jdata.length; i++){
         if(jdata[i].name===answer.client){
-          console.log(string.same_name_use)
+          console.log('You have used this name already.')
           return;
         }
       }
@@ -115,7 +107,7 @@ function addCmd(){
           }
         ])
         data.command.push(answer)
-        console.log(data)
+        // console.log(data)
         const nextAnswer = await inq.prompt([
           {
             type: "input",
@@ -151,7 +143,7 @@ function updateCmd(){
     }
   ]).then(answer =>{
     if(answer.update_client==="add" || answer.update_client==="all" || answer.update_client==="delete" || answer.update_client==="update" || answer.update_client==="-h" || answer.update_client==="-v"){
-      console.log(string.reserve_command)
+      console.log('This is reserved command.')
       return;
     }
     for(var i=0; i<jdata.length; i++){
@@ -164,7 +156,7 @@ function updateCmd(){
         return;
       }
     }
-    console.log(string.command_not_available)
+    console.log('No command found by this name.')
   }).catch(error =>{
     console.log(error)
   })
@@ -179,7 +171,7 @@ function updateCmdName(i){
     }
   ]).then(answer => {
     if(answer.update===''){
-      console.log(string.empty_command)
+      console.log('No command found, give a valid command.')
       return;
     }
 
@@ -191,18 +183,52 @@ function updateCmdName(i){
 }
 // updateCmdName
 
-function executeCmd(commandName){
+async function executeCmd(commandName){
   for(var i=0; i<jdata.length; i++){
     if(jdata[i].name===commandName){
-      cmdRun(i);
-      
-      return;
+      if (!/^win/.test(process.platform)) { // linux
+        await cmdRun(i)
+      } else { // windows
+        await cmdRunWin(i)
+      }
+        return
+      // return await cmdRun(i);
     }
   }
-  console.log(string.command_not_available)
+  console.log('No command found by this name')
 
 }
 //executeCmd
+
+async function cmdRunWin(number) {
+  for(var i=0;i<jdata[number].command.length;i++){
+    var runcmd = await spawn(
+    'dir',
+    [
+      '-c',
+      `${jdata[number].command[i].command}`,
+    ], {
+        detached: true,
+        shell: true,
+      stdio: ['inherit', 'inherit', 'inherit']
+    }, 
+    (error, stdout, stderr, exit) => {
+    if(error){
+        console.log(`Output of ${jdata[0].command[i].command}: ${error}`)
+    }
+    if(stdout){
+        console.log(`Output of ${jdata[0].command[i].command}: ${stdout}`);
+    }
+    if(stderr){
+        console.log(`Output of ${jdata[0].command[i].command}: ${stderr}`);
+    }
+  });
+  runcmd.on('exit', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+}
+}
+
 async function cmdRun(number) {
     for(var i=0;i<jdata[number].command.length;i++){
       var runcmd = await spawn(
@@ -224,6 +250,9 @@ async function cmdRun(number) {
       if(stderr){
           console.log(`Output of ${jdata[0].command[i].command}: ${stderr}`);
       }
+      if(exit){
+        console.log('command exited')
+      }
     });
     runcmd.on('exit', (code) => {
       console.log(`child process exited with code ${code}`);
@@ -241,7 +270,7 @@ function deleteCmd(){
     }
   ]).then(answer=>{
     if(answer.nameofpacket==="add" || answer.nameofpacket==="all" || answer.nameofpacket==="delete" || answer.nameofpacket==="update" || answer.nameofpacket==="-h" || answer.nameofpacket==="-v"){
-      console.log(string.reserve_command)
+      console.log('This is a reserved command.')
       return;
     }
     console.log(answer.nameofpacket)
@@ -253,7 +282,7 @@ function deleteCmd(){
         return;
       }
     }
-    console.log(string.nameing_command_not_available)
+    console.log('No command found by this name.')
   }).catch(error=>{
     console.log(error)
   })
