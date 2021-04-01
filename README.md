@@ -20,3 +20,4 @@ my -h
 
 
 ### ***`It made on linux, It may not run perfectly on windows. But a big welcome to you to make it possible for windows also!`***
+- You can give a pull request!
