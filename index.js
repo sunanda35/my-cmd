@@ -1,11 +1,14 @@
 #!/usr/bin/env node
-
-
+var path = require('path');
+var appDir = path.dirname(require.main.filename);
 const fs = require('fs');
-const jdata = require('/tmp/jdata.json');
+const jsonPath = appDir+'/tmp/jdata.json'
+const jdata = require(jsonPath);
 const { spawn } = require('child_process');
 const inq = require('inquirer');
 const { version } = require('./package.json');
+
+
 
 console.log(process.platform)
 var argv = (process.argv.slice(2))
@@ -34,6 +37,7 @@ if(argv.length===0){
         break;
       default:
         executeCmd(argv[0])
+      
     }
   }catch(err){
     console.log(err)
@@ -58,9 +62,14 @@ function addCmd(){
     "command":[]
   }
   
-  var dataAdd = (data) =>{
+  function dataAdd(data){
+    if(data === [])
+      jdata = []
+
     jdata.push(data)
-   fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
+    var buffer = Buffer.from(JSON.stringify(jdata))
+   fs.writeFileSync(jsonPath, buffer, {flag : 'w'})
+
    }
 
   inq.prompt([
@@ -166,7 +175,7 @@ function updateCmdName(i){
 
     if(answer.update != jdata[i].name){
       jdata[i].name = answer.update
-      fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
+      fs.writeFileSync(jsonPath, JSON.stringify(jdata))
     }
   })
 }
@@ -177,6 +186,7 @@ function executeCmd(commandName){
     if(jdata[i].name===commandName){
       cmdRun(i);
       console.log('Every command has been executed!')
+      
       return;
     }
   }
@@ -229,7 +239,7 @@ function deleteCmd(){
     for(var i=0;i<jdata.length;i++){
       if(jdata[i].name===answer.nameofpacket){
         jdata.splice(i,1)
-        fs.writeFileSync(`/tmp/jdata.json`, JSON.stringify(jdata))
+        fs.writeFileSync(jsonPath, JSON.stringify(jdata))
         console.log(`Deleted this "${answer.nameofpacket}" name command packet`)
         return;
       }
