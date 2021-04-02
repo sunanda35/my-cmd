@@ -1,9 +1,10 @@
+
 # MY-CMD-CLI:
 You can run multiple command with one command name. You can manually create, delete and update command.
 ## Demo:
-<video src="https://github.com/sunanda35/my-cmd-cli/blob/master/assets/my-demo.mp4?raw=true" autostart>
+<video src="https://user-images.githubusercontent.com/46472626/113441972-d0e32e80-940c-11eb-8854-9ca17a6612d8.mp4">
 
-![caption](https://github.com/sunanda35/my-cmd-cli/blob/master/assets/my-demo.mp4?raw=true)
+![caption](https://user-images.githubusercontent.com/46472626/113441972-d0e32e80-940c-11eb-8854-9ca17a6612d8.mp4)
 
 ## Install my-cmd-cli:
 ```
