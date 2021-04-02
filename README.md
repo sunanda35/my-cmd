@@ -5,6 +5,8 @@ You can run multiple command with one command name. You can manually create, del
 <video src="https://user-images.githubusercontent.com/46472626/113441972-d0e32e80-940c-11eb-8854-9ca17a6612d8.mp4">
 
 ![caption](https://user-images.githubusercontent.com/46472626/113441972-d0e32e80-940c-11eb-8854-9ca17a6612d8.mp4)
+[![Watch the video](https://user-images.githubusercontent.com/46472626/113441972-d0e32e80-940c-11eb-8854-9ca17a6612d8.mp4)
+
 
 ## Install my-cmd-cli:
 ```
