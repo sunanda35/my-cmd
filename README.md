@@ -1,5 +1,9 @@
 # MY-CMD-CLI:
-It will make you free to remember and run all command by running a simple command which name you will decide.
+You can run multiple command with one command name. You can manually create, delete and update command.
+## Demo:
+<video src="https://github.com/sunanda35/my-cmd-cli/blob/master/assets/my-demo.mp4?raw=true" autostart>
+
+![caption](https://github.com/sunanda35/my-cmd-cli/blob/master/assets/my-demo.mp4?raw=true)
 
 ## Install my-cmd-cli:
 ```
