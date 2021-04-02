@@ -203,7 +203,7 @@ async function executeCmd(commandName){
 async function cmdRunWin(number) {
   for(var i=0;i<jdata[number].command.length;i++){
     var runcmd = await spawn(
-    'dir',
+    'cmd',
     [
       '-c',
       `${jdata[number].command[i].command}`,
